@@ -4,13 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { makeServer } from "./server";
+import { ChakraProvider , ColorModeScript} from "@chakra-ui/react";
+import { BrowserRouter } from "react-router-dom";import { theme } from "./frontend/themes";
 
 // Call make Servernpm i miragejs
 makeServer();
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+     <BrowserRouter>
+      <ChakraProvider theme={theme}>
+        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+        <App />
+      </ChakraProvider>
+    </BrowserRouter>
+  
   </React.StrictMode>
 );
 
