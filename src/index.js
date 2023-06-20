@@ -5,10 +5,12 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { makeServer } from "./server";
 import { ChakraProvider , ColorModeScript} from "@chakra-ui/react";
-import { BrowserRouter } from "react-router-dom";import { theme } from "./frontend/themes";
+import { BrowserRouter } from "react-router-dom";
+import { theme } from "./frontend/themes";
 
 // Call make Servernpm i miragejs
 makeServer();
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
@@ -18,7 +20,6 @@ root.render(
         <App />
       </ChakraProvider>
     </BrowserRouter>
-  
   </React.StrictMode>
 );
 
