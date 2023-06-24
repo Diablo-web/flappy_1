@@ -3,10 +3,12 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { Provider } from "react-redux";
 import { makeServer } from "./server";
 import { ChakraProvider , ColorModeScript} from "@chakra-ui/react";
 import { BrowserRouter } from "react-router-dom";
 import { theme } from "./frontend/themes";
+import { store } from "./frontend/store";
 
 // Call make Servernpm i miragejs
 makeServer();
@@ -16,8 +18,10 @@ root.render(
   <React.StrictMode>
      <BrowserRouter>
       <ChakraProvider theme={theme}>
-        <ColorModeScript initialColorMode={theme.config.initialColorMode} />
-        <App />
+      <Provider store={store}>
+          <ColorModeScript initialColorMode={theme.config.initialColorMode} />
+          <App />
+        </Provider>
       </ChakraProvider>
     </BrowserRouter>
   </React.StrictMode>
