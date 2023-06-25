@@ -1,34 +1,33 @@
 import {
-    Button,
-    Checkbox,
-    Flex,
-    FormControl,
-    FormLabel,
-    Heading,
-    IconButton,
-    Input,
-    InputGroup,
-    InputRightElement,
-    Link,
-    Text,
-    useToast,
-    useColorModeValue,
-  } from "@chakra-ui/react";
-  import React, { useState } from "react";
-  import { IoMdEye, IoMdEyeOff } from "react-icons/io";
- 
-  import { useDispatch, useSelector } from "react-redux";
+  Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormLabel,
+  Heading,
+  IconButton,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Link,
+  Text,
+  useToast,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+import { IoMdEye, IoMdEyeOff } from "react-icons/io";
+import { useDispatch, useSelector } from "react-redux";
 import { Link as ReactLink, useLocation, useNavigate } from "react-router-dom";
-import { DATA,TOKEN } from "../../constants";
+import { DATA, TOKEN } from "../../constants";
 import { signin } from "../../features";
-  
-  const SignInPage = () => {
-    const [user, setUser] = useState({
-      username: "",
-      password: "",
-    });
-    const [showPassword, setShowPassword] = useState(false);
-    const [signInMethod, setSignInMethod] = useState(null);
+
+const SignInPage = () => {
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [signInMethod, setSignInMethod] = useState(null);
 
   const toast = useToast();
 
@@ -42,14 +41,8 @@ import { signin } from "../../features";
   const handleSignIn = async (user) => {
     const response = await dispatch(signin(user));
     if (response?.payload?.encodedToken) {
-      localStorage.setItem(
-       TOKEN,
-        response.payload.encodedToken
-      );
-      localStorage.setItem(
-        DATA,
-        JSON.stringify(response.payload.foundUser)
-      );
+      localStorage.setItem(TOKEN, response.payload.encodedToken);
+      localStorage.setItem(DATA, JSON.stringify(response.payload.foundUser));
       navigate(from, { replace: true });
       toast({
         title: "Signed In",
@@ -68,106 +61,105 @@ import { signin } from "../../features";
       });
     }
   };
-  
-    return (
-      <Flex grow="1" alignItems="center" justifyContent="center">
-        <Flex
-          as={"form"}
-          direction="column"
-          gap="4"
-          w="25rem"
-          maxW="84vw"
-          bg={useColorModeValue("gray.100", "gray.800")}
-          px="5"
-          py="4"
-          rounded="lg"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setSignInMethod("Manual");
-            handleSignIn(user);
-          }}
-        >
-          <Heading fontSize="4xl">Sign In</Heading>
-          <Flex direction="column" gap="2">
-            <FormControl isRequired>
-              <FormLabel htmlFor="username">UserName</FormLabel>
+
+  return (
+    <Flex grow="1" alignItems="center" justifyContent="center">
+      <Flex
+        as={"form"}
+        direction="column"
+        gap="4"
+        w="25rem"
+        maxW="84vw"
+        bg={useColorModeValue("gray.100", "gray.800")}
+        px="5"
+        py="4"
+        rounded="lg"
+        onSubmit={(e) => {
+          e.preventDefault();
+          setSignInMethod("Manual");
+          handleSignIn(user);
+        }}
+      >
+        <Heading fontSize="4xl">Sign In</Heading>
+        <Flex direction="column" gap="2">
+          <FormControl isRequired>
+            <FormLabel htmlFor="username">UserName</FormLabel>
+            <Input
+              id="username"
+              type="text"
+              placeholder="e.g. diablo"
+              value={user.username}
+              onChange={(e) => setUser({ ...user, username: e.target.value })}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="password">Password</FormLabel>
+            <InputGroup size="md">
               <Input
-                 id="username"
-                 type="text"
-                 placeholder="e.g. diablo"
-                 value={user.username}
-                 onChange={(e) => setUser({ ...user, username: e.target.value })}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <InputGroup size="md">
-                <Input
-                  id="password"
-                  pr="3rem"
-                  type={showPassword ? "text" : "password"}
-                  placeholder="Enter password"
-                  value={user.password}
+                id="password"
+                pr="3rem"
+                type={showPassword ? "text" : "password"}
+                placeholder="Enter password"
+                value={user.password}
                 onChange={(e) => setUser({ ...user, password: e.target.value })}
+              />
+              <InputRightElement>
+                <IconButton
+                  size="sm"
+                  rounded="md"
+                  aria-label={showPassword ? "Hide Password" : "Show Password"}
+                  icon={showPassword ? <IoMdEye /> : <IoMdEyeOff />}
+                  onClick={() => setShowPassword(!showPassword)}
                 />
-                <InputRightElement>
-                  <IconButton
-                    size="sm"
-                    rounded="md"
-                    aria-label={showPassword ? "Hide Password" : "Show Password"}
-                    icon={showPassword ? <IoMdEye /> : <IoMdEyeOff />}
-                    onClick={() => setShowPassword(!showPassword)}
-                  />
-                </InputRightElement>
-              </InputGroup>
-            </FormControl>
-            <Checkbox colorScheme="blue" defaultChecked>
-              Remember Me
-            </Checkbox>
-            
-            <Button
+              </InputRightElement>
+            </InputGroup>
+          </FormControl>
+          <Checkbox colorScheme="blue" defaultChecked>
+            Remember Me
+          </Checkbox>
+
+          <Button
             isLoading={signInMethod === "Manual" && loading}
             colorScheme="blue"
             type="submit"
           >
-              Sign In
-            </Button>
-            <Button
-              
-              isLoading={signInMethod === "Guest" && loading}
-              colorScheme="blue"
-              variant="outline"
-              onClick={(e) => {
-                e.preventDefault();
-                setSignInMethod("Guest");
-                setUser({
-                  username: "anish1234",
-                  password: "password",
-                });
-                handleSignIn({
-                  username: "anish1234",
-                  password: "password",
-                });
-              }}
+            Sign In
+          </Button>
+          <Button
+            isLoading={signInMethod === "Guest" && loading}
+            colorScheme="blue"
+            variant="outline"
+            onClick={(e) => {
+              e.preventDefault();
+              setSignInMethod("Guest");
+              setUser({
+                username: "anish1234",
+                password: "password",
+              });
+              handleSignIn({
+                username: "anish1234",
+                password: "password",
+              });
+            }}
+          >
+            Sign In as Guest
+          </Button>
+          <Flex gap="1">
+            <Text>New here?</Text>
+            <Link
+              as={ReactLink}
+              to="/signup"
+              style={{ textDecoration: "none" }}
+              pb="0.5px"
+              borderBottom="1px"
             >
-              Sign In as Guest
-            </Button>
-            <Flex gap="1">
-              <Text>New here?</Text>
-              <Link
-                as={ReactLink}
-                to="/signup"
-                style={{ textDecoration: "none" }}
-                pb="0.5px"
-                borderBottom="1px"
-              >
-                Create an account!
-              </Link>
-            </Flex>
+              Create an account!
+            </Link>
           </Flex>
         </Flex>
       </Flex>
-    );
-  };
-  
-  export { SignInPage };
+    </Flex>
+  );
+};
+
+export { SignInPage };
