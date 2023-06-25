@@ -11,14 +11,63 @@ import {
     InputRightElement,
     Link,
     Text,
+    useToast,
     useColorModeValue,
   } from "@chakra-ui/react";
   import React, { useState } from "react";
   import { IoMdEye, IoMdEyeOff } from "react-icons/io";
-  import { Link as ReactLink } from "react-router-dom";
+ 
+  import { useDispatch, useSelector } from "react-redux";
+import { Link as ReactLink, useLocation, useNavigate } from "react-router-dom";
+import { DATA,TOKEN } from "../../constants";
+import { signin } from "../../features";
   
   const SignInPage = () => {
+    const [user, setUser] = useState({
+      username: "",
+      password: "",
+    });
     const [showPassword, setShowPassword] = useState(false);
+    const [signInMethod, setSignInMethod] = useState(null);
+
+  const toast = useToast();
+
+  const { loading } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
+  const location = useLocation();
+  let from = location.state?.from?.pathname || "/";
+
+  const handleSignIn = async (user) => {
+    const response = await dispatch(signin(user));
+    if (response?.payload?.encodedToken) {
+      localStorage.setItem(
+       TOKEN,
+        response.payload.encodedToken
+      );
+      localStorage.setItem(
+        DATA,
+        JSON.stringify(response.payload.foundUser)
+      );
+      navigate(from, { replace: true });
+      toast({
+        title: "Signed In",
+        description: "You have successfully signed in.",
+        status: "success",
+        duration: 3000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Sign In Failed",
+        description: response.payload,
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   
     return (
       <Flex grow="1" alignItems="center" justifyContent="center">
@@ -32,15 +81,22 @@ import {
           px="5"
           py="4"
           rounded="lg"
+          onSubmit={(e) => {
+            e.preventDefault();
+            setSignInMethod("Manual");
+            handleSignIn(user);
+          }}
         >
           <Heading fontSize="4xl">Sign In</Heading>
           <Flex direction="column" gap="2">
             <FormControl isRequired>
-              <FormLabel htmlFor="email">Email address</FormLabel>
+              <FormLabel htmlFor="username">UserName</FormLabel>
               <Input
-                id="email"
-                type="email"
-                placeholder="e.g. johndoe@gmail.com"
+                 id="username"
+                 type="text"
+                 placeholder="e.g. diablo"
+                 value={user.username}
+                 onChange={(e) => setUser({ ...user, username: e.target.value })}
               />
             </FormControl>
             <FormControl isRequired>
@@ -51,6 +107,8 @@ import {
                   pr="3rem"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter password"
+                  value={user.password}
+                onChange={(e) => setUser({ ...user, password: e.target.value })}
                 />
                 <InputRightElement>
                   <IconButton
@@ -63,17 +121,34 @@ import {
                 </InputRightElement>
               </InputGroup>
             </FormControl>
-            <Checkbox colorScheme="purple" defaultChecked>
+            <Checkbox colorScheme="blue" defaultChecked>
               Remember Me
             </Checkbox>
-            <Button isLoading={false} colorScheme="purple" type="submit">
+            
+            <Button
+            isLoading={signInMethod === "Manual" && loading}
+            colorScheme="blue"
+            type="submit"
+          >
               Sign In
             </Button>
             <Button
-              isLoading={false}
-              colorScheme="purple"
+              
+              isLoading={signInMethod === "Guest" && loading}
+              colorScheme="blue"
               variant="outline"
-              type="submit"
+              onClick={(e) => {
+                e.preventDefault();
+                setSignInMethod("Guest");
+                setUser({
+                  username: "anish1234",
+                  password: "password",
+                });
+                handleSignIn({
+                  username: "anish1234",
+                  password: "password",
+                });
+              }}
             >
               Sign In as Guest
             </Button>
