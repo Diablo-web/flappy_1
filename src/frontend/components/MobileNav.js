@@ -1,105 +1,135 @@
 import {
-    Avatar,
-    Box,
-    Flex,
-    Heading,
-    HStack,
-    IconButton,
-    Image,
-    Menu,
-    MenuButton,
-    MenuItem,
-    MenuList,
-    Text,
-    useColorModeValue,
-    VStack,
-  } from "@chakra-ui/react";
-  import { FiChevronDown, FiMenu } from "react-icons/fi";
-  import { Link, NavLink } from "react-router-dom";
-  import { ColorModeSwitch } from "./ColorModeSwitch";
-  
-  const MobileNav = ({ onOpen, ...rest }) => {
-    const colorModeValue = useColorModeValue(true, false);
-  
-    return (
-      <Flex
-        ml={{ base: 0, md: 60 }}
-        px={{ base: 4, md: 4 }}
-        height="20"
-        alignItems="center"
-        bg={useColorModeValue("white", "gray.900")}
-        borderBottomWidth="1px"
-        borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-        justifyContent={{ base: "space-between", md: "flex-end" }}
-        {...rest}
-      >
-        <IconButton
-          display={{ base: "flex", md: "none" }}
-          onClick={onOpen}
-          variant="outline"
-          aria-label="open menu"
-          icon={<FiMenu />}
-        />
-  
-        <Flex
-          as={Link}
-          to="/"
-          display={{ base: "flex", md: "none" }}
-          h="10"
-          alignItems="center"
-          gap={2}
-        >
-          <Image src="/assets/logo/flappy.png" maxH="100%" />
-          <Heading fontSize="2xl">flappy</Heading>
-        </Flex>
-  
-        <HStack spacing={{ base: "4", md: "6" }}>
-          <ColorModeSwitch />
-          <Flex alignItems={"center"}>
-            <Menu>
-              <MenuButton
-                py={2}
-                transition="all 0.3s"
-                _focus={{ boxShadow: "none" }}
-              >
-                <HStack>
-                  <Avatar size={"sm"} name="Sumedh" src="" />
-                  <VStack
-                    display={{ base: "none", md: "flex" }}
-                    alignItems="flex-start"
-                    spacing="1px"
-                    ml="2"
-                  >
-                    <Text fontSize="sm">Sumedh</Text>
-                    <Text fontSize="xs" color="gray.600">
-                      diablo
-                    </Text>
-                  </VStack>
-                  <Box display={{ base: "none", md: "flex" }}>
-                    <FiChevronDown />
-                  </Box>
-                </HStack>
-              </MenuButton>
-              <MenuList
-                bg={useColorModeValue("white", "gray.900")}
-                borderColor={useColorModeValue("gray.200", "gray.700")}
-              >
-                <MenuItem
-                  as={NavLink}
-                  to="/profile"
-                  _activeLink={{
-                    background: colorModeValue ? "gray.300" : "whiteAlpha.300",
-                  }}
-                >
-                  Profile
-                </MenuItem>
-                <MenuItem>Sign out</MenuItem>
-              </MenuList>
-            </Menu>
-          </Flex>
-        </HStack>
-      </Flex>
-    );
+  Avatar,
+  Box,
+  Flex,
+  Heading,
+  HStack,
+  IconButton,
+  Image,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  Text,
+  useToast,
+  useColorModeValue,
+  VStack,
+} from "@chakra-ui/react";
+import { FiChevronDown, FiMenu } from "react-icons/fi";
+import { Link, NavLink } from "react-router-dom";
+import { ColorModeSwitch } from "./ColorModeSwitch";
+import { useDispatch, useSelector } from "react-redux";
+
+import { DATA, TOKEN } from "../constants";
+import { signout } from "../features";
+
+const MobileNav = ({ onOpen, ...rest }) => {
+  const colorModeValue = useColorModeValue(true, false);
+  const toast = useToast();
+
+  const auth = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(signout());
+    localStorage.removeItem(TOKEN);
+    localStorage.removeItem(DATA);
+    toast({
+      title: "Signed Out!",
+      description: "You have signed out successfully.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
   };
-  
-  export { MobileNav };
+
+  return (
+    <Flex
+      // ml={{ base: 0, md: 70 }}
+      ml={{ base: "0", md: "56", lg: "64", xl: "72" }}
+      px={{ base: 4, md: 4 }}
+      height="20"
+      alignItems="center"
+      bg={useColorModeValue("white", "gray.900")}
+      borderBottomWidth="1px"
+      borderBottomColor={useColorModeValue("gray.200", "gray.700")}
+      justifyContent={{ base: "space-between", md: "flex-end" }}
+      {...rest}
+    >
+      <IconButton
+        display={{ base: "flex", md: "none" }}
+        onClick={onOpen}
+        variant="outline"
+        aria-label="open menu"
+        icon={<FiMenu />}
+      />
+
+      <Flex
+        as={Link}
+        to="/"
+        display={{ base: "flex", md: "none" }}
+        h="10"
+        alignItems="center"
+        gap={2}
+      >
+        <Image src="/assets/logo/flappy.png" maxH="100%" />
+        <Heading fontSize="2xl">Flappy</Heading>
+      </Flex>
+
+      <HStack spacing={{ base: "4", md: "6" }}>
+        <ColorModeSwitch />
+        <Flex alignItems={"center"}>
+          <Menu>
+            <MenuButton
+              py={2}
+              transition="all 0.3s"
+              _focus={{ boxShadow: "none" }}
+            >
+              <HStack>
+                <Avatar
+                  size={"sm"}
+                  name={auth?.user?.firstName + auth?.user?.lastName}
+                  src={auth.user?.avatarURL}
+                />
+
+                <VStack
+                  display={{ base: "none", md: "flex" }}
+                  alignItems="flex-start"
+                  spacing="1px"
+                  ml="2"
+                >
+                  <Text fontSize="sm">{`${auth?.user?.firstName} ${auth?.user?.lastName}`}</Text>
+                  <Text fontSize="sm">Sumedh</Text>
+                  <Text fontSize="xs" color="gray.600">
+                    {auth?.user?.username}
+                  </Text>
+                </VStack>
+                <Box display={{ base: "none", md: "flex" }}>
+                  <FiChevronDown />
+                </Box>
+              </HStack>
+            </MenuButton>
+            <MenuList
+              bg={useColorModeValue("white", "gray.900")}
+              borderColor={useColorModeValue("gray.200", "gray.700")}
+            >
+              <MenuItem
+                as={NavLink}
+                to={`/profile/${auth?.user?.username}`}
+                _activeLink={{
+                  background: colorModeValue ? "gray.300" : "whiteAlpha.300",
+                }}
+              >
+                Profile
+              </MenuItem>
+              <MenuItem onClick={handleSignOut}>Sign out</MenuItem>
+            </MenuList>
+          </Menu>
+        </Flex>
+      </HStack>
+    </Flex>
+  );
+};
+
+export { MobileNav };
