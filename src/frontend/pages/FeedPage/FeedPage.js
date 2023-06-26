@@ -5,16 +5,25 @@ import {
   PostSection,
   SuggestedProfiles,
 } from "../../components";
+import { useSelector } from "react-redux";
+import { giveFeedPosts } from "../../utils";
 
 const FeedPage = () => {
+  const {
+    user: { following, username },
+  } = useSelector((state) => state.auth);
+  const { data: posts } = useSelector((state) => state.posts);
+
+  const feedPosts = giveFeedPosts(posts, following, username);
+
   return (
     <Flex gap={"12"} position={"relative"}>
-      <Flex direction={"column"} gap={"4"}>
+      <Flex flexGrow={"1"} direction={"column"} gap={"4"}>
         <Box display={{ base: "block", lg: "none" }}>
           <FilterSection />
         </Box>
         <CreatePost />
-        <PostSection />
+        <PostSection posts={feedPosts} />
       </Flex>
       <Flex
         display={{ base: "none", lg: "flex" }}
