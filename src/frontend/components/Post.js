@@ -5,22 +5,14 @@ import {
   IconButton,
   Menu,
   MenuButton,
-  Button,
   MenuItem,
   MenuList,
   Text,
   useColorModeValue,
   useDisclosure,
   useToast,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-  Textarea,
 } from "@chakra-ui/react";
+import { useRef, useState } from "react";
 import { FaCircle } from "react-icons/fa";
 import {
   MdBookmark,
@@ -34,25 +26,34 @@ import {
   MdThumbDown,
   MdThumbUp,
 } from "react-icons/md";
-import { useRef, useState } from "react";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   bookmarkPost,
-  dislikePost,
   deletePost,
+  dislikePost,
   editPost,
   likePost,
   removePostFromBookmark,
 } from "../features";
+import { EditPostModal } from "./EditPostModal";
+import { ShowListModal } from "./ShowListModal";
 
 const Post = ({ post }) => {
   const colorModeValue = useColorModeValue(true, false);
-
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const initialRef = useRef(null);
+  const {
+    isOpen: isOpenEditPost,
+    onOpen: onOpenEditPost,
+    onClose: onCloseEditPost,
+  } = useDisclosure();
+  const initialRefEditPost = useRef(null);
+  const {
+    isOpen: isOpenLikedBy,
+    onOpen: onOpenLikedBy,
+    onClose: onCloseLikedBy,
+  } = useDisclosure();
 
   const {
     _id,
@@ -74,20 +75,25 @@ const Post = ({ post }) => {
   const dispatch = useDispatch();
 
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
-  const handleLikePost = () => {
+  const handleLikePost = (e) => {
+    e.stopPropagation();
     dispatch(likePost({ postId: _id, token }));
   };
 
-  const handleDisikePost = () => {
+  const handleDisikePost = (e) => {
+    e.stopPropagation();
     dispatch(dislikePost({ postId: _id, token }));
   };
 
-  const handleBookmarkPost = () => {
+  const handleBookmarkPost = (e) => {
+    e.stopPropagation();
     dispatch(bookmarkPost({ postId: _id, token }));
   };
 
-  const handleRemovePostFromBookmark = () => {
+  const handleRemovePostFromBookmark = (e) => {
+    e.stopPropagation();
     dispatch(removePostFromBookmark({ postId: _id, token }));
   };
 
@@ -105,7 +111,7 @@ const Post = ({ post }) => {
           duration: 3000,
           isClosable: true,
         });
-        onClose();
+        onCloseEditPost();
       }
       setIsEditing(false);
     } else {
@@ -143,20 +149,25 @@ const Post = ({ post }) => {
       py={"6"}
       borderTopWidth={"1px"}
       borderTopColor={useColorModeValue("gray.200", "gray.700")}
+      onClick={() => navigate(`/post/${_id}`)}
     >
       <Avatar
-        // src={"https://avatars.githubusercontent.com/u/67695053?v=4"}
-
         name={`${firstName} ${lastName}`}
         src={avatarURL}
         alt={username}
         as={Link}
         to={`/profile/${username}`}
+        onClick={(e) => e.stopPropagation()}
       />
       <Flex flexGrow={"1"} direction={"column"} gap={"1"}>
         <Flex alignItems={"center"} justifyContent={"space-between"}>
           <Flex gap={2} alignItems={"center"} justifyContent={"space-between"}>
-            <Flex direction={"column"} as={Link} to={`/profile/${username}`}>
+            <Flex
+              direction={"column"}
+              as={Link}
+              to={`/profile/${username}`}
+              onClick={(e) => e.stopPropagation()}
+            >
               <Text
                 fontWeight={600}
                 _hover={{ textDecoration: "underline" }}
@@ -178,12 +189,14 @@ const Post = ({ post }) => {
                 icon={<MdMoreVert />}
                 variant={"ghost"}
                 rounded={"full"}
+                onClick={(e) => e.stopPropagation()}
               />
               <MenuList
                 bg={colorModeValue ? "white" : "gray.900"}
                 borderColor={colorModeValue ? "gray.200" : "gray.700"}
+                onClick={(e) => e.stopPropagation()}
               >
-                <MenuItem icon={<MdEdit />} onClick={onOpen}>
+                <MenuItem icon={<MdEdit />} onClick={onOpenEditPost}>
                   Edit Post
                 </MenuItem>
                 <MenuItem icon={<MdDelete />} onClick={handleDeletePost}>
@@ -205,6 +218,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "green.500" : "green.200" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {likedBy.find(({ username }) => username === user.username) ? (
               <Icon fontSize={"20"} as={MdThumbUp} />
@@ -224,6 +238,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "red.500" : "red.200" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {dislikedBy.find(({ username }) => username === user.username) ? (
               <Icon fontSize={"20"} as={MdThumbDown} />
@@ -249,6 +264,7 @@ const Post = ({ post }) => {
             gap={"1"}
             color={"gray.500"}
             _hover={{ color: colorModeValue ? "purple.500" : "purple.300" }}
+            onClick={(e) => e.stopPropagation()}
           >
             {bookmarks.find((post) => post._id === _id) ? (
               <Icon
@@ -265,65 +281,54 @@ const Post = ({ post }) => {
             )}
           </Flex>
         </Flex>
+        {likedBy.length !== 0 &&
+          (likedBy.length > 1 ? (
+            <Text
+              fontSize={"sm"}
+              _hover={{
+                textDecoration: "underline",
+              }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenLikedBy();
+              }}
+            >
+              Liked by {`${likedBy[0].firstName} ${likedBy[0].lastName}`} and{" "}
+              {likedBy.length - 1} others
+            </Text>
+          ) : (
+            <Text
+              fontSize={"sm"}
+              _hover={{ textDecoration: "underline" }}
+              onClick={(e) => {
+                e.stopPropagation();
+                onOpenLikedBy();
+              }}
+            >
+              Liked by {`${likedBy[0].firstName} ${likedBy[0].lastName}`}
+            </Text>
+          ))}
       </Flex>
-      {/* Modal */}
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        initialFocusRef={initialRef}
-        isCentered
-        scrollBehavior={"inside"}
-      >
-        <ModalOverlay />
-        <ModalContent bg={useColorModeValue("white", "gray.900")}>
-          <ModalHeader>Editing Post</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Flex direction={"column"} gap={"3"}>
-              <Flex gap={2}>
-                <Avatar
-                  name={`${firstName} ${lastName}`}
-                  src={avatarURL}
-                  alt={username}
-                />
-                <Flex direction={"column"} fontSize={"sm"}>
-                  <Text fontWeight={600}>{`${firstName} ${lastName}`}</Text>
-                  <Text color={"gray.500"}>@{username}</Text>
-                </Flex>
-              </Flex>
-              <Textarea
-                ref={initialRef}
-                placeContent={"What's happening?"}
-                value={postData.content}
-                onChange={(e) =>
-                  setPostData({ ...postData, content: e.target.value })
-                }
-                onFocus={(e) => {
-                  const val = e.target.value;
-                  e.target.value = "";
-                  e.target.value = val;
-                }}
-              />
-            </Flex>
-          </ModalBody>
-          <ModalFooter>
-            <Flex gap={"2"}>
-              <Button colorScheme={"purple"} variant="ghost" onClick={onClose}>
-                Cancel
-              </Button>
-              <Button
-                isLoading={isEditing}
-                colorScheme={"purple"}
-                mr={3}
-                onClick={handleEditPost}
-              >
-                Save
-              </Button>
-            </Flex>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-      {/* Modal */}
+      <EditPostModal
+        isOpen={isOpenEditPost}
+        onClose={onCloseEditPost}
+        initialRef={initialRefEditPost}
+        firstName={firstName}
+        lastName={lastName}
+        avatarURL={avatarURL}
+        username={username}
+        content={content}
+        setPostData={setPostData}
+        postData={postData}
+        isEditing={isEditing}
+        handleEditPost={handleEditPost}
+      />
+      <ShowListModal
+        isOpen={isOpenLikedBy}
+        onClose={onCloseLikedBy}
+        title={"Liked By"}
+        list={likedBy}
+      />
     </Flex>
   );
 };
