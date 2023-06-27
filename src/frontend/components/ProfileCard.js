@@ -1,8 +1,19 @@
 import { Avatar, Button, Flex, Text } from "@chakra-ui/react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { followUser } from "../features";
+
 
 const ProfileCard = ({ user }) => {
-  const { firstName, lastName, avatarURL, username } = user;
+
+  const { _id, firstName, lastName, avatarURL, username } = user;
+
+  const { token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleFollowUser = () => {
+    dispatch(followUser({ followUserId: _id, token }));
+  };
 
   return (
     <Flex alignItems={"center"} justifyContent={"space-between"}>
@@ -27,7 +38,12 @@ const ProfileCard = ({ user }) => {
           <Text color={"gray.500"}>@{username}</Text>
         </Flex>
       </Flex>
-      <Button px={4} fontSize={"sm"} rounded={"full"}>
+      <Button
+        px={4}
+        fontSize={"sm"}
+        rounded={"full"}
+        onClick={handleFollowUser}
+      >
         Follow
       </Button>
     </Flex>
