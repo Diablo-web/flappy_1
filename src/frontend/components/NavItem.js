@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Flex, Icon, Link, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Icon, Link,Text, useColorModeValue } from "@chakra-ui/react";
 
-const NavItem = ({ icon, children, path, ...rest }) => {
+const NavItem = ({ icon, children, path,  onClick, ...rest }) => {
   const colorModeValue = useColorModeValue(true, false);
 
   return (
@@ -10,6 +10,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
       to={path}
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
+      onClick={onClick}
     >
       {({ isActive }) =>
         isActive ? (
@@ -21,12 +22,14 @@ const NavItem = ({ icon, children, path, ...rest }) => {
             borderRadius="lg"
             role="group"
             cursor="pointer"
-            bg={colorModeValue ? "purple.300" : "purple.700"}
+            // width="50%"
+            bg={colorModeValue ? "blue.200" : "blue.200"}
             color={colorModeValue ? "black" : "white"}
             {...rest}
           >
-            {icon && <Icon mr="6" fontSize="24" as={icon} />}
-            {children}
+            {icon && <Icon mr="6" fontSize="32" as={icon} />}
+            {/* {children} */}
+            <Text fontSize="larger">{children}</Text>
           </Flex>
         ) : (
           <Flex
@@ -38,7 +41,7 @@ const NavItem = ({ icon, children, path, ...rest }) => {
             role="group"
             cursor="pointer"
             _hover={{
-              bg: colorModeValue ? "purple.100" : "purple.900",
+              bg: colorModeValue ? "blue.100" : "blue.900",
               color: colorModeValue ? "black" : "white",
             }}
             {...rest}
@@ -46,14 +49,15 @@ const NavItem = ({ icon, children, path, ...rest }) => {
             {icon && (
               <Icon
                 mr="6"
-                fontSize="24"
+                fontSize="32"
                 _groupHover={{
                   color: colorModeValue ? "black" : "white",
                 }}
                 as={icon}
               />
             )}
-            {children}
+            {/* {children} */}
+            <Text fontSize="larger">{children}</Text>
           </Flex>
         )
       }
