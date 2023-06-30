@@ -29,7 +29,7 @@ const Sidebar = ({ onClose, ...rest }) => {
       path: `/profile/${auth?.user?.username}`,
     },
   ];
-  
+
   return (
     <Box
       bg={useColorModeValue("white", "gray.900")}
@@ -57,7 +57,7 @@ const Sidebar = ({ onClose, ...rest }) => {
       </Flex>
       <Flex direction="column" gap={4} p="8">
         {LinkItems.map((link) => (
-          <NavItem key={link.name} icon={link.icon} path={link.path}>
+          <NavItem key={link.name} icon={link.icon} path={link.path} onClick={onClose}>
             {link.name}
           </NavItem>
         ))}
