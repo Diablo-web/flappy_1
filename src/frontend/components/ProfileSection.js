@@ -1,18 +1,43 @@
 import { LinkIcon } from "@chakra-ui/icons";
 import {
   Button,
+  Avatar,
   Flex,
   Heading,
-  Image,
   Link,
   Text,
   useColorModeValue,
+  useDisclosure,
 } from "@chakra-ui/react";
 
-import { useSelector } from "react-redux";
+import { useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { followUser, unfollowUser } from "../features";
+import { EditProfileModal } from "./EditProfileModal";
+import { ShowListModal } from "./ShowListModal";
 
 const ProfileSection = ({ profile }) => {
   const {
+    isOpen: isOpenEditProfile,
+    onOpen: onOpenEditProfile,
+    onClose: onCloseEditProfile,
+  } = useDisclosure();
+  const initialRefEditProfile = useRef(null);
+
+  const {
+    isOpen: isOpenFollowing,
+    onOpen: onOpenFollowing,
+    onClose: onCloseFollowing,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOpenFollowers,
+    onOpen: onOpenFollowers,
+    onClose: onCloseFollowers,
+  } = useDisclosure();
+
+  const {
+    _id,
     firstName,
     lastName,
     avatarURL,
@@ -23,7 +48,16 @@ const ProfileSection = ({ profile }) => {
     followers,
   } = profile;
 
-  const { user } = useSelector((state) => state.auth);
+  const { token, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleFollowUser = () => {
+    dispatch(followUser({ followUserId: _id, token }));
+  };
+
+  const handleUnfollowUser = () => {
+    dispatch(unfollowUser({ followUserId: _id, token }));
+  };
 
   return (
     <Flex
@@ -32,7 +66,7 @@ const ProfileSection = ({ profile }) => {
       pt={"6"}
       pb={"2"}
     >
-      <Image
+      <Avatar
         name={`${firstName} ${lastName}`}
         rounded={"full"}
         boxSize={{
@@ -58,11 +92,30 @@ const ProfileSection = ({ profile }) => {
             </Text>
           </Flex>
           {user.username === username ? (
-            <Button px={4} fontSize={"sm"} rounded={"full"}>
+            <Button
+              px={4}
+              fontSize={"sm"}
+              rounded={"full"}
+              onClick={onOpenEditProfile}
+            >
               Edit
             </Button>
+          ) : user.following.find((user) => user.username === username) ? (
+            <Button
+              px={4}
+              fontSize={"sm"}
+              rounded={"full"}
+              onClick={handleUnfollowUser}
+            >
+              Following
+            </Button>
           ) : (
-            <Button px={4} fontSize={"sm"} rounded={"full"}>
+            <Button
+              px={4}
+              fontSize={"sm"}
+              rounded={"full"}
+              onClick={handleFollowUser}
+            >
               Follow
             </Button>
           )}
@@ -81,13 +134,33 @@ const ProfileSection = ({ profile }) => {
           </Link>
         </Flex>
         <Flex gap={"2"}>
-          <Flex gap={"1"} alignItems={"center"}>
+          <Flex
+            gap={"1"}
+            cursor={"pointer"}
+            alignItems={"center"}
+            borderBottomWidth={"2px"}
+            borderBottomColor={"transparent"}
+            _hover={{
+              borderBottomColor: useColorModeValue("gray.400", "gray.500"),
+            }}
+            onClick={onOpenFollowing}
+          >
             <Text fontWeight={"bold"}>{following.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Following
             </Text>
           </Flex>
-          <Flex gap={"1"} alignItems={"center"}>
+          <Flex
+            gap={"1"}
+            cursor={"pointer"}
+            alignItems={"center"}
+            borderBottomWidth={"2px"}
+            borderBottomColor={"transparent"}
+            _hover={{
+              borderBottomColor: useColorModeValue("gray.400", "gray.500"),
+            }}
+            onClick={onOpenFollowers}
+          >
             <Text fontWeight={"bold"}>{followers.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Followers
@@ -95,6 +168,24 @@ const ProfileSection = ({ profile }) => {
           </Flex>
         </Flex>
       </Flex>
+      <EditProfileModal
+        isOpen={isOpenEditProfile}
+        onClose={onCloseEditProfile}
+        initialRef={initialRefEditProfile}
+        profile={profile}
+      />
+      <ShowListModal
+        isOpen={isOpenFollowing}
+        onClose={onCloseFollowing}
+        title={"Followering"}
+        list={following}
+      />
+      <ShowListModal
+        isOpen={isOpenFollowers}
+        onClose={onCloseFollowers}
+        title={"Followers"}
+        list={followers}
+      />
     </Flex>
   );
 };
