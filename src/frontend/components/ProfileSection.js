@@ -177,7 +177,7 @@ const ProfileSection = ({ profile }) => {
       <ShowListModal
         isOpen={isOpenFollowing}
         onClose={onCloseFollowing}
-        title={"Followering"}
+        title={"Following"}
         list={following}
       />
       <ShowListModal
