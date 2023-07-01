@@ -17,6 +17,9 @@ import { EditProfileModal } from "./EditProfileModal";
 import { ShowListModal } from "./ShowListModal";
 
 const ProfileSection = ({ profile }) => {
+
+  const colorModeValue = useColorModeValue(true, false);
+
   const {
     isOpen: isOpenEditProfile,
     onOpen: onOpenEditProfile,
@@ -121,18 +124,20 @@ const ProfileSection = ({ profile }) => {
           )}
         </Flex>
         <Text fontSize={{ base: "lg", md: "xl" }}>{bio}</Text>
-        <Flex
-          mt={"2"}
-          alignItems={"center"}
-          gap={"2"}
-          fontSize={{ base: "sm" }}
-          color={useColorModeValue("blue.800", "blue.300")}
-        >
-          <LinkIcon />
-          <Link as={"a"} target="_blank" href={website}>
-            {website.slice(8)}
-          </Link>
-        </Flex>
+        {website && (
+          <Flex
+            mt={"2"}
+            alignItems={"center"}
+            gap={"2"}
+            fontSize={{ base: "sm" }}
+            color={colorModeValue ? "blue.800" : "blue.300"}
+          >
+            <LinkIcon />
+            <Link as={"a"} target="_blank" href={website}>
+              {website.slice(8)}
+            </Link>
+          </Flex>
+        )}
         <Flex gap={"2"}>
           <Flex
             gap={"1"}
