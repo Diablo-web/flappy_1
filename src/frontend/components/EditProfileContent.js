@@ -41,6 +41,7 @@ const EditProfileContent = ({ onClose, initialRef, profile }) => {
       toast({
         title: "Profile Edited!",
         description: "Your profile has been edited succesfully.",
+        position: "bottom-right",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -63,7 +64,7 @@ const EditProfileContent = ({ onClose, initialRef, profile }) => {
                 id="firstName"
                 ref={initialRef}
                 type="text"
-                placeholder="e.g. John"
+                placeholder="e.g. Sam"
                 defaultValue={firstName}
                 onChange={(e) =>
                   setUserData({ ...userData, firstName: e.target.value })
@@ -75,7 +76,7 @@ const EditProfileContent = ({ onClose, initialRef, profile }) => {
               <Input
                 id="lastName"
                 type="text"
-                placeholder="e.g. Doe"
+                placeholder="e.g. Marsh"
                 defaultValue={lastName}
                 onChange={(e) =>
                   setUserData({ ...userData, lastName: e.target.value })
@@ -88,7 +89,7 @@ const EditProfileContent = ({ onClose, initialRef, profile }) => {
             <Input
               id="username"
               type="text"
-              placeholder="e.g. horsemaker"
+              placeholder="e.g. diablo"
               defaultValue={username}
               onChange={(e) =>
                 setUserData({ ...userData, username: e.target.value })
