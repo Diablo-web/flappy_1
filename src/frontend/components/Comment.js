@@ -75,6 +75,7 @@ const Comment = ({ postId, comment }) => {
       toast({
         title: "Comment Deleted!",
         description: "Your comment has been deleted successfully.",
+        position: "bottom-right",
         status: "success",
         duration: 3000,
         isClosable: true,
