@@ -20,12 +20,15 @@ import {
   MdDelete,
   MdEdit,
   MdMoreVert,
-  MdOutlineInsertComment,
-  MdOutlineThumbDown,
-  MdOutlineThumbUp,
-  MdThumbDown,
-  MdThumbUp,
 } from "react-icons/md";
+
+import { FaRegComments } from "react-icons/fa";
+import {
+  HiHandThumbDown,
+  HiHandThumbUp,
+  HiOutlineHandThumbDown,
+  HiOutlineHandThumbUp,
+} from "react-icons/hi2";
 import Moment from "react-moment";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -107,6 +110,7 @@ const Post = ({ post }) => {
         toast({
           title: "Post Edited!",
           description: "Your post has been edited successfully.",
+          position: "bottom-right",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -118,6 +122,7 @@ const Post = ({ post }) => {
       toast({
         title: "Empty Post!",
         description: "Post can't be left empty.",
+        position: "bottom-right",
         status: "warning",
         duration: 3000,
         isClosable: true,
@@ -134,6 +139,7 @@ const Post = ({ post }) => {
       toast({
         title: "Post Deleted!",
         description: "Your post has been deleted successfully.",
+        position: "bottom-right",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -150,6 +156,9 @@ const Post = ({ post }) => {
       borderTopWidth={"1px"}
       borderTopColor={useColorModeValue("gray.200", "gray.700")}
       onClick={() => navigate(`/post/${_id}`)}
+      bgColor={colorModeValue ? "#F3F4F6" : "gray.800"}
+      rounded={"md"}
+      m={"2"}
     >
       <Avatar
         name={`${firstName} ${lastName}`}
@@ -172,12 +181,20 @@ const Post = ({ post }) => {
                 fontWeight={600}
                 _hover={{ textDecoration: "underline" }}
               >{`${firstName} ${lastName}`}</Text>
+
               <Text fontSize={"sm"} color={"gray.500"}>
                 @{username}
               </Text>
             </Flex>
-            <Icon fontSize={"6"} color={"gray.500"} as={FaCircle} />
-            <Text fontSize={"sm"} color={"gray.500"}>
+
+            <Icon
+              fontSize={"4"}
+              color={"black.100"}
+              ml={"2"}
+              mb={"5"}
+              as={FaCircle}
+            />
+            <Text fontSize={"sm"} color={"gray.500"} mb={"5"}>
               <Moment fromNow>{updatedAt}</Moment>
             </Text>
           </Flex>
@@ -190,6 +207,7 @@ const Post = ({ post }) => {
                 variant={"ghost"}
                 rounded={"full"}
                 onClick={(e) => e.stopPropagation()}
+                _hover={{ bgColor: "gray.300" }}
               />
               <MenuList
                 bg={colorModeValue ? "white" : "gray.900"}
@@ -216,16 +234,16 @@ const Post = ({ post }) => {
           <Flex
             alignItems={"center"}
             gap={"1"}
-            color={"gray.500"}
+            color={"gray.600"}
             _hover={{ color: colorModeValue ? "green.500" : "green.200" }}
             onClick={(e) => e.stopPropagation()}
           >
             {likedBy.find(({ username }) => username === user.username) ? (
-              <Icon fontSize={"20"} as={MdThumbUp} />
+              <Icon fontSize={"22"} as={HiHandThumbUp} />
             ) : (
               <Icon
-                fontSize={"20"}
-                as={MdOutlineThumbUp}
+                fontSize={"22"}
+                as={HiOutlineHandThumbUp}
                 onClick={handleLikePost}
               />
             )}
@@ -236,16 +254,16 @@ const Post = ({ post }) => {
           <Flex
             alignItems={"center"}
             gap={"1"}
-            color={"gray.500"}
+            color={"gray.600"}
             _hover={{ color: colorModeValue ? "red.500" : "red.200" }}
             onClick={(e) => e.stopPropagation()}
           >
             {dislikedBy.find(({ username }) => username === user.username) ? (
-              <Icon fontSize={"20"} as={MdThumbDown} />
+              <Icon fontSize={"22"} as={HiHandThumbDown} />
             ) : (
               <Icon
-                fontSize={"20"}
-                as={MdOutlineThumbDown}
+                fontSize={"22"}
+                as={HiOutlineHandThumbDown}
                 onClick={handleDisikePost}
               />
             )}
@@ -253,8 +271,13 @@ const Post = ({ post }) => {
               {dislikedBy.length !== 0 && dislikedBy.length}
             </Text>
           </Flex>
-          <Flex alignItems={"center"} gap={"1"} color={"gray.500"}>
-            <Icon fontSize={"20"} as={MdOutlineInsertComment} />
+          <Flex
+            alignItems={"center"}
+            gap={"1"}
+            color={"gray.600"}
+            _hover={{ color: colorModeValue ? "green.500" : "green.200" }}
+          >
+            <Icon fontSize={"22"} as={FaRegComments} />
             <Text fontSize={"smaller"}>
               {comments.length !== 0 && comments.length}
             </Text>
@@ -262,19 +285,19 @@ const Post = ({ post }) => {
           <Flex
             alignItems={"center"}
             gap={"1"}
-            color={"gray.500"}
-            _hover={{ color: colorModeValue ? "purple.500" : "purple.300" }}
+            color={"gray.600"}
+            _hover={{ color: colorModeValue ? "red.500" : "red.300" }}
             onClick={(e) => e.stopPropagation()}
           >
             {bookmarks.find((post) => post._id === _id) ? (
               <Icon
-                fontSize={"20"}
+                fontSize={"22"}
                 as={MdBookmark}
                 onClick={handleRemovePostFromBookmark}
               />
             ) : (
               <Icon
-                fontSize={"20"}
+                fontSize={"22"}
                 as={MdBookmarkBorder}
                 onClick={handleBookmarkPost}
               />
@@ -284,6 +307,7 @@ const Post = ({ post }) => {
         {likedBy.length !== 0 &&
           (likedBy.length > 1 ? (
             <Text
+              mt={"1"}
               fontSize={"sm"}
               _hover={{
                 textDecoration: "underline",
