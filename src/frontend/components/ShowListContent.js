@@ -14,7 +14,7 @@ const ShowListContent = ({ title, list }) => {
       <ModalHeader>{title}</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        <Flex direction={"column"} gap={"4"}>
+        <Flex direction={"column"} gap={"4"} mb={"4"}>
           {list.map(({ _id, firstName, lastName, avatarURL, username }) => (
             <Flex key={_id} gap={2}>
               <Avatar
