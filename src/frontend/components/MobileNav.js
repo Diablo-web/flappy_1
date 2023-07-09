@@ -38,6 +38,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
     toast({
       title: "Signed Out!",
       description: "You have signed out successfully.",
+      position: "bottom-right",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -46,7 +47,6 @@ const MobileNav = ({ onOpen, ...rest }) => {
 
   return (
     <Flex
-      // ml={{ base: 0, md: 70 }}
       ml={{ base: "0", md: "56", lg: "64", xl: "72" }}
       px={{ base: 4, md: 4 }}
       height="20"
@@ -100,7 +100,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                   ml="2"
                 >
                   <Text fontSize="sm">{`${auth?.user?.firstName} ${auth?.user?.lastName}`}</Text>
-                  <Text fontSize="sm">Sumedh</Text>
+
                   <Text fontSize="xs" color="gray.600">
                     {auth?.user?.username}
                   </Text>
