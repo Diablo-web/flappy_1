@@ -33,6 +33,7 @@ const BookMarkPage = () => {
       toast({
         title: error.title,
         description: error.description,
+        position: "bottom-right",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -56,10 +57,10 @@ const BookMarkPage = () => {
             justifyContent={"center"}
           >
             <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="purple.500"
+              thickness="8px"
+              speed="0.85s"
+              emptyColor="gray.300"
+              color="blue.400"
               size="xl"
             />
           </Flex>
