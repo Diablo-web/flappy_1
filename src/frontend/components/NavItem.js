@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
-import { Flex, Icon, Link,Text, useColorModeValue } from "@chakra-ui/react";
+import { Flex, Icon, Link, Text, useColorModeValue } from "@chakra-ui/react";
 
-const NavItem = ({ icon, children, path,  onClick, ...rest }) => {
+const NavItem = ({ icon, children, path, onClick, ...rest }) => {
   const colorModeValue = useColorModeValue(true, false);
 
   return (
@@ -22,13 +22,12 @@ const NavItem = ({ icon, children, path,  onClick, ...rest }) => {
             borderRadius="lg"
             role="group"
             cursor="pointer"
-            // width="50%"
-            bg={colorModeValue ? "blue.200" : "blue.200"}
+            bg={colorModeValue ? "blue.200" : "blue.700"}
             color={colorModeValue ? "black" : "white"}
             {...rest}
           >
             {icon && <Icon mr="6" fontSize="32" as={icon} />}
-            {/* {children} */}
+
             <Text fontSize="larger">{children}</Text>
           </Flex>
         ) : (
@@ -56,7 +55,7 @@ const NavItem = ({ icon, children, path,  onClick, ...rest }) => {
                 as={icon}
               />
             )}
-            {/* {children} */}
+
             <Text fontSize="larger">{children}</Text>
           </Flex>
         )
