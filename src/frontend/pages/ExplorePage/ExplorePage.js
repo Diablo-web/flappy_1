@@ -46,13 +46,13 @@ const ExplorePage = () => {
               alignItems={"center"}
               justifyContent={"center"}
             >
-              <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="purple.500"
-                size="xl"
-              />
+            <Spinner
+              thickness="8px"
+              speed="0.85s"
+              emptyColor="gray.300"
+              color="blue.400"
+              size="xl"
+            />
             </Flex>
           ) : (
             <Flex
@@ -79,7 +79,9 @@ const ExplorePage = () => {
         p={4}
         rounded={"lg"}
         minW={{ base: "52", lg: "72", xl: "80" }}
-        bgColor={useColorModeValue("gray.100", "gray.800")}
+        bgColor={useColorModeValue("white.100", "gray.800")}
+        borderWidth={"3px"}
+        borderColor={useColorModeValue("gray.200", "gray.700")}
       >
          <FilterSection />
         <Heading fontSize={"2xl"}>Suggested</Heading>
