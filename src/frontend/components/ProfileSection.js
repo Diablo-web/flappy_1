@@ -17,7 +17,6 @@ import { EditProfileModal } from "./EditProfileModal";
 import { ShowListModal } from "./ShowListModal";
 
 const ProfileSection = ({ profile }) => {
-
   const colorModeValue = useColorModeValue(true, false);
 
   const {
@@ -50,6 +49,9 @@ const ProfileSection = ({ profile }) => {
     following,
     followers,
   } = profile;
+
+  const followingCount = following?.length ?? 0;
+  const followersCount = followers?.length ?? 0;
 
   const { token, user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -103,7 +105,10 @@ const ProfileSection = ({ profile }) => {
             >
               Edit
             </Button>
-          ) : user.following.find((user) => user.username === username) ? (
+          ) : (user.following ?? []).find(
+              (user) => user.username === username
+            ) ? (
+        
             <Button
               px={4}
               fontSize={"sm"}
@@ -150,11 +155,12 @@ const ProfileSection = ({ profile }) => {
             }}
             onClick={onOpenFollowing}
           >
-            <Text fontWeight={"bold"}>{following.length}</Text>
+            <Text fontWeight={"bold"}>{followingCount.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Following
             </Text>
           </Flex>
+
           <Flex
             gap={"1"}
             cursor={"pointer"}
@@ -166,7 +172,7 @@ const ProfileSection = ({ profile }) => {
             }}
             onClick={onOpenFollowers}
           >
-            <Text fontWeight={"bold"}>{followers.length}</Text>
+            <Text fontWeight={"bold"}>{followersCount.length}</Text>
             <Text fontSize={"sm"} color={"gray.500"}>
               Followers
             </Text>

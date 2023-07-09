@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { followUser } from "../features";
 
-
 const ProfileCard = ({ user }) => {
 
   const { _id, firstName, lastName, avatarURL, username } = user;
