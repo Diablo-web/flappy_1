@@ -1,25 +1,26 @@
 import { Box, Flex, Heading, useColorModeValue } from "@chakra-ui/react";
+import { useSelector } from "react-redux";
 import {
   CreatePost,
   FilterSection,
   PostSection,
   SuggestedProfiles,
 } from "../../components";
-import { useSelector } from "react-redux";
 import { giveFeedPosts } from "../../utils";
 
 const FeedPage = () => {
   const {
     user: { following, username },
   } = useSelector((state) => state.auth);
+  const { sortBy } = useSelector((state) => state.filters);
   const { data: posts } = useSelector((state) => state.posts);
 
-  const feedPosts = giveFeedPosts(posts, following, username);
+  const feedPosts = giveFeedPosts(posts, following, username, sortBy);
 
   return (
     <Flex gap={"12"} position={"relative"}>
       <Flex flexGrow={"1"} direction={"column"} gap={"4"}>
-        <Box display={{ base: "block", lg: "none" }}>
+        <Box display={{ base: "block", lg: "none" }} mt={"2"}>
           <FilterSection />
         </Box>
         <CreatePost />
