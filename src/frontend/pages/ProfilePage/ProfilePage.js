@@ -20,17 +20,13 @@ const ProfilePage = () => {
 
   const { username } = useParams();
 
-  
-
   const {
-
     profile: {
       data: userProfile,
       loading: profileLoading,
       error: profileError,
     },
     posts: { data: userPosts, loading: postsLoading, error: postsError },
-   
   } = useSelector((state) => state.user);
 
   const { data: users } = useSelector((state) => state.users);
@@ -56,6 +52,7 @@ const ProfilePage = () => {
         title: profileError.title,
         description: profileError.description,
         status: "error",
+        position: "bottom-right",
         duration: 3000,
         isClosable: true,
       });
@@ -68,6 +65,7 @@ const ProfilePage = () => {
         title: postsError.title,
         description: postsError.description,
         status: "error",
+        position: "bottom-right",
         duration: 3000,
         isClosable: true,
       });
@@ -84,11 +82,11 @@ const ProfilePage = () => {
             alignItems={"center"}
             justifyContent={"center"}
           >
-            <Spinner
-              thickness="4px"
-              speed="0.65s"
-              emptyColor="gray.200"
-              color="purple.500"
+             <Spinner
+              thickness="8px"
+              speed="0.85s"
+              emptyColor="gray.300"
+              color="blue.400"
               size="xl"
             />
           </Flex>
@@ -114,10 +112,10 @@ const ProfilePage = () => {
                 justifyContent={"center"}
               >
                 <Spinner
-                  thickness="4px"
-                  speed="0.65s"
-                  emptyColor="gray.200"
-                  color="purple.500"
+                  thickness="8px"
+                  speed="0.85s"
+                  emptyColor="gray.300"
+                  color="blue.400"
                   size="xl"
                 />
               </Flex>
