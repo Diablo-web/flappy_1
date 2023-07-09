@@ -41,12 +41,14 @@ const SignInPage = () => {
   const handleSignIn = async (user) => {
     const response = await dispatch(signin(user));
     if (response?.payload?.encodedToken) {
+      const foundUser = response.payload.foundUser;
       localStorage.setItem(TOKEN, response.payload.encodedToken);
-      localStorage.setItem(DATA, JSON.stringify(response.payload.foundUser));
+      localStorage.setItem(DATA, JSON.stringify(foundUser));
       navigate(from, { replace: true });
       toast({
         title: "Signed In",
-        description: "You have successfully signed in.",
+        description: `👋 Welcome back, ${foundUser.firstName}! `,
+        position: "bottom-right", // Position the toast on the bottom-rights corner
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -55,6 +57,7 @@ const SignInPage = () => {
       toast({
         title: "Sign In Failed",
         description: response.payload,
+        position: "bottom-right",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -81,6 +84,7 @@ const SignInPage = () => {
         }}
       >
         <Heading fontSize="4xl">Sign In</Heading>
+        <Text fontStyle={"italic"} fontSize={"20px"}>Unlock yourself, Spread your Wings!</Text>
         <Flex direction="column" gap="2">
           <FormControl isRequired>
             <FormLabel htmlFor="username">UserName</FormLabel>
@@ -145,12 +149,14 @@ const SignInPage = () => {
             Sign In as Guest
           </Button>
           <Flex gap="1">
-            <Text>New here?</Text>
+            <Text>New to Flappy?</Text>
             <Link
               as={ReactLink}
               to="/signup"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none" ,  color: "#2B6CB0"}}
               pb="0.5px"
+              // color="#2B6CB0"
+              // color= "blue.800"
               borderBottom="1px"
             >
               Create an account!
