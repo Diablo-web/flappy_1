@@ -33,8 +33,8 @@ import {
             alignItems="center"
             gap={2}
           >
-            <Image src="/assets/logos/folks-logo.svg" maxH="100%" />
-            <Heading fontSize="3xl">folks</Heading>
+            <Image src="/assets/logo/flappy.png" maxH="100%" />
+            <Heading fontSize="3xl">Flappy</Heading>
           </Flex>
   
           <Stack
@@ -44,14 +44,14 @@ import {
             spacing={4}
           >
             <ColorModeSwitch />
-            <Button as={Link} to="/signin" variant="ghost" colorScheme="purple">
+            <Button as={Link} to="/signin" variant="ghost" colorScheme={useColorModeValue("blue")}>
               Sign In
             </Button>
             <Button
               as={Link}
               to="/signup"
               display={{ base: "none", md: "inline-flex" }}
-              colorScheme="purple"
+              colorScheme={useColorModeValue("blue")}
             >
               Sign Up
             </Button>

@@ -6,7 +6,7 @@ import {
   DrawerContent,
   useDisclosure,
 } from "@chakra-ui/react";
-import { MobileNav, SideBar } from "../../components";
+import { MobileNav, Sidebar } from "../../components";
 import { Outlet } from "react-router-dom";
 import { Footer } from "../Footer";
 
@@ -16,7 +16,7 @@ const NavBarMenu = () => {
   return (
     <>
       <Box minH="100vh" bg={useColorModeValue("white", "gray.900")}>
-        <SideBar
+        <Sidebar
           onClose={() => onClose}
           display={{ base: "none", md: "block" }}
         />
@@ -27,14 +27,14 @@ const NavBarMenu = () => {
           onClose={onClose}
           returnFocusOnClose={false}
           onOverlayClick={onClose}
-          size="full"
+          size={"full"}
         >
           <DrawerContent>
-            <SideBar onClose={onClose} />
+            <Sidebar onClose={onClose} />
           </DrawerContent>
         </Drawer>
         <MobileNav onOpen={onOpen} />
-        <Box ml={{ base: 0, md: 60 }} p="4">
+        <Box ml={{ base: "0", md: "56", lg: "64", xl: "72" }} p="4">
           <Outlet />
         </Box>
       </Box>
