@@ -3,7 +3,6 @@ import {
   Checkbox,
   Flex,
   FormControl,
- 
   FormLabel,
   Heading,
   IconButton,
@@ -56,8 +55,9 @@ const SignUpPage = () => {
       );
       navigate(from, { replace: true });
       toast({
-        title: "Account created.",
+        title: "Account has been created.",
         description: "Thanks for creating account.",
+        position: "bottom-right",
         status: "success",
         duration: 3000,
         isClosable: true,
@@ -66,6 +66,7 @@ const SignUpPage = () => {
       toast({
         title: "Sign Up Failed",
         description: response.payload,
+        position: "bottom-right",
         status: "error",
         duration: 3000,
         isClosable: true,
@@ -87,6 +88,7 @@ const SignUpPage = () => {
         onSubmit={(e) => handleSignUp(e, user)}
       >
         <Heading fontSize="4xl">Sign Up</Heading>
+        <Text fontStyle={"italic"} fontSize={"20px"}>Join the Flappy, Spread your Wings!</Text>
         <Flex direction="column" gap="2">
           <Flex  direction={["column", "row"]} gap="2">
             <FormControl isRequired>
@@ -152,11 +154,11 @@ const SignUpPage = () => {
             Sign Up
           </Button>
           <Flex gap="1">
-            <Text>Existing User?</Text>
+            <Text>Already have an account?</Text>
             <Link
               as={ReactLink}
               to="/signin"
-              style={{ textDecoration: "none" }}
+              style={{ textDecoration: "none" , color: "#2B6CB0"}}
               pb="0.5px"
               borderBottom="1px"
             >
