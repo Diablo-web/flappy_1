@@ -136,12 +136,12 @@ const EditProfileContent = ({ onClose, initialRef, profile }) => {
       </ModalBody>
       <ModalFooter>
         <Flex gap={"2"}>
-          <Button colorScheme={"purple"} variant="ghost" onClick={onClose}>
+          <Button colorScheme={"blue"} variant="ghost" onClick={onClose}>
             Cancel
           </Button>
           <Button
             isLoading={isEditing}
-            colorScheme={"purple"}
+            colorScheme={"blue"}
             mr={3}
             type={"submit"}
           >
