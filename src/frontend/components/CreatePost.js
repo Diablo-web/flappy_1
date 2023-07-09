@@ -32,6 +32,7 @@ const CreatePost = () => {
         toast({
           title: "Post Created!",
           description: "Your post has been created successfully.",
+          position: "bottom-right",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -43,6 +44,7 @@ const CreatePost = () => {
       toast({
         title: "Empty Post!",
         description: "Post can't be left empty.",
+        position: "bottom-right",
         status: "warning",
         duration: 3000,
         isClosable: true,
@@ -79,19 +81,22 @@ const CreatePost = () => {
       <Textarea
         w="full"
         h={{ base: 24, md: 28 }}
-        border="none"
-        outline="none"
         resize="vertical"
-        focusBorderColor="transparent"
+        focusBorderColor="blue.200"
         placeholder="What's on your mind?"
         value={postData.content}
         onChange={(e) => setPostData({ ...postData, content: e.target.value })}
+        borderColor={useColorModeValue("gray.200")}
       />
       <Button
         isLoading={isPosting}
-        alignSelf={"flex-end"}
-        colorScheme={useColorModeValue("blue.200")}
+        alignSelf={"flex-start"}
+        backgroundColor={"blue.200"}
+        // colorScheme={useColorModeValue("blue.300")}
         onClick={handleCreatePost}
+        rounded={"full"}
+        _hover={{ bgColor: "blue.300" , borderColor: "gray.400"}} 
+       
       >
         Post
       </Button>
