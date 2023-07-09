@@ -19,6 +19,15 @@ const CommentsSection = ({ postId, comments }) => {
   const handleAddComment = async () => {
     if (commentData.text !== "") {
       setIsCommenting(true);
+      console.log("Comment Data:", commentData);
+      console.log("Token:", token);
+      console.log("User:", {
+        firstName,
+        lastName,
+        username,
+        avatarURL,
+      });
+
       const response = await dispatch(
         addPostComment({
           postId,
@@ -32,12 +41,15 @@ const CommentsSection = ({ postId, comments }) => {
           token,
         })
       );
+      // console.log("Response:", response);
+
       setIsCommenting(false);
       if (response?.payload?.posts) {
         toast({
           title: "Comment posted!",
           description: "Your comment was posted successfully.",
           status: "success",
+          position: "bottom-right",
           duration: 3000,
           isClosable: true,
         });
@@ -47,6 +59,7 @@ const CommentsSection = ({ postId, comments }) => {
       toast({
         title: "Empty Comment!",
         description: "Comment can't be left empty.",
+        position: "bottom-right",
         status: "warning",
         duration: 3000,
         isClosable: true,
@@ -62,13 +75,17 @@ const CommentsSection = ({ postId, comments }) => {
           placeholder={"Add a comment..."}
           autoFocus
           value={commentData.text}
+          rounded={"xl"}
           onChange={(e) =>
             setCommentData({ ...commentData, text: e.target.value })
           }
         />
         <Button
           isLoading={isCommenting}
-          colorScheme={"purple"}
+          bgColor={"blue.300"}
+          color={"white"}
+          _hover={{ bgColor: "blue.400" }}
+          rounded={"full"}
           onClick={handleAddComment}
         >
           Comment
@@ -84,3 +101,4 @@ const CommentsSection = ({ postId, comments }) => {
 };
 
 export { CommentsSection };
+
