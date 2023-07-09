@@ -84,6 +84,7 @@ const editPost = createAsyncThunk(
   async ({ postId, postData, token }, { rejectWithValue }) => {
     try {
       const { data } = await editPostService(postId, postData, token);
+      // console.log("Data:", data);
       return data;
     } catch (error) {
       return rejectWithValue({
@@ -101,6 +102,7 @@ const deletePost = createAsyncThunk(
       const { data } = await deletePostService(postId, token);
       return data;
     } catch (error) {
+      // console.log("Error:", error);
       return rejectWithValue({
         title: "Try again!",
         description: "Something went wrong. Please try again.",
@@ -116,6 +118,7 @@ const addPostComment = createAsyncThunk(
       const { data } = await addPostCommentService(postId, commentData, token);
       return data;
     } catch (error) {
+      // console.log("Error:", error);
       return rejectWithValue({
         title: "Try again!",
         description: "Something went wrong. Please try again.",

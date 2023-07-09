@@ -31,6 +31,7 @@ const followUser = createAsyncThunk(
   async ({ followUserId, token }, { rejectWithValue }) => {
     try {
       const { data } = await followUserService(followUserId, token);
+      // console.log("Data:", data);
       return data;
     } catch (error) {
       return rejectWithValue({
