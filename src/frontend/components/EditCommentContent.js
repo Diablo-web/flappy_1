@@ -37,6 +37,7 @@ const EditCommentContent = ({ onClose, initialRef, postId, comment }) => {
         toast({
           title: "Comment Edited!",
           description: "Your comment has been edited succesfully.",
+          position: "bottom-right",
           status: "success",
           duration: 3000,
           isClosable: true,
@@ -48,6 +49,7 @@ const EditCommentContent = ({ onClose, initialRef, postId, comment }) => {
       toast({
         title: "Empty Comment!",
         description: "Comment can't be left empty.",
+        position: "bottom-right",
         status: "warning",
         duration: 3000,
         isClosable: true,
@@ -91,12 +93,12 @@ const EditCommentContent = ({ onClose, initialRef, postId, comment }) => {
       </ModalBody>
       <ModalFooter>
         <Flex gap={"2"}>
-          <Button colorScheme={"purple"} variant="ghost" onClick={onClose}>
+          <Button colorScheme={"blue"} variant="ghost" onClick={onClose}>
             Cancel
           </Button>
           <Button
             isLoading={isEditing}
-            colorScheme={"purple"}
+            colorScheme={"blue"}
             mr={3}
             onClick={handleEditPostComment}
           >
