@@ -34,12 +34,12 @@ const SinglePostPage = () => {
               justifyContent={"center"}
             >
               <Spinner
-                thickness="4px"
-                speed="0.65s"
-                emptyColor="gray.200"
-                color="purple.500"
-                size="xl"
-              />
+              thickness="8px"
+              speed="0.85s"
+              emptyColor="gray.300"
+              color="blue.400"
+              size="xl"
+            />
             </Flex>
           ) : (
             <Flex
