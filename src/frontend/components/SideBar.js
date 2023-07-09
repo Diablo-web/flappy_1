@@ -6,12 +6,9 @@ import {
   Image,
   useColorModeValue,
 } from "@chakra-ui/react";
-import {
-  MdAccountCircle,
-  MdBookmarks,
-  MdExplore,
-  MdHome,
-} from "react-icons/md";
+import { MdOutlineAccountCircle, MdOutlineExplore } from "react-icons/md";
+
+import { BiHomeCircle, BiBookmarks } from "react-icons/bi";
 import { Link } from "react-router-dom";
 import { NavItem } from "./NavItem";
 import { useSelector } from "react-redux";
@@ -20,12 +17,12 @@ const Sidebar = ({ onClose, ...rest }) => {
   const auth = useSelector((state) => state.auth);
 
   const LinkItems = [
-    { name: "Feed", icon: MdHome, path: "/" },
-    { name: "Explore", icon: MdExplore, path: "/explore" },
-    { name: "Bookmarks", icon: MdBookmarks, path: "/bookmarks" },
+    { name: "Feed", icon: BiHomeCircle, path: "/" },
+    { name: "Explore", icon: MdOutlineExplore, path: "/explore" },
+    { name: "Bookmarks", icon: BiBookmarks, path: "/bookmarks" },
     {
       name: "Profile",
-      icon: MdAccountCircle,
+      icon: MdOutlineAccountCircle,
       path: `/profile/${auth?.user?.username}`,
     },
   ];
@@ -36,8 +33,6 @@ const Sidebar = ({ onClose, ...rest }) => {
       borderRight="1px"
       borderRightColor={useColorModeValue("gray.200", "gray.700")}
       w={{ base: "full", md: "56", lg: "64", xl: "72" }}
-      // w={{ base: "full", md: "80" }}
-      // w={{ base: "full", md: "50", lg: "60", xl: "80" }}
       pos="fixed"
       h="full"
       {...rest}
@@ -57,7 +52,12 @@ const Sidebar = ({ onClose, ...rest }) => {
       </Flex>
       <Flex direction="column" gap={4} p="8">
         {LinkItems.map((link) => (
-          <NavItem key={link.name} icon={link.icon} path={link.path} onClick={onClose}>
+          <NavItem
+            key={link.name}
+            icon={link.icon}
+            path={link.path}
+            onClick={onClose}
+          >
             {link.name}
           </NavItem>
         ))}
