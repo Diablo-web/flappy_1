@@ -73,7 +73,7 @@ export const posts = [
   // Post 2
   {
     _id: uuid(),
-    content: "The only real mistake is the one from which we learn nothing.",
+    content: "Do you use semicolons in Javascript? 🤔",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -272,7 +272,7 @@ export const posts = [
   {
     _id: uuid(),
     content:
-      "You can’t cross the sea merely by standing and staring at the water.",
+      "You can’t cross the sea 🏊‍♂️ merely by standing and staring at the water.",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -406,7 +406,7 @@ export const posts = [
   // Post 6
   {
     _id: uuid(),
-    content: "Either you run the day, or the day runs you.",
+    content: "Weekend update: - Learned about prompt engineering, Different models, How to build a chatbot. It was super fun 🥳",
     likes: {
       likeCount: 3,
       likedBy: [
@@ -477,7 +477,7 @@ export const posts = [
   // Post 7
   {
     _id: uuid(),
-    content: "The roots of education are bitter, but the fruit is sweet.",
+    content: "AR and VR are revolutionizing the Digital landscape, offering immersive experiences that are reshaping user interactions. The combined market size of AR and VR is expected to reach 💵 $296.9 billion by 2024. These technologies are transforming industries from retail to education",
     likes: {
       likeCount: 2,
       likedBy: [
@@ -825,7 +825,7 @@ export const posts = [
   // Post 12
   {
     _id: uuid(),
-    content: "The triumph can’t be had without the struggle.",
+    content: "... ahhhhh! Now we understand many things... 😅 Unhappy youth... but it happens, huh? There is still the possibility of understanding the nonsense. Mica can be justification for idiocy. I used to read Dylan Dog 🐕 too.",
     likes: {
       likeCount: 3,
       likedBy: [
