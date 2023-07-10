@@ -11,10 +11,12 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost } from "../features";
-
+import EmojiPicker from "emoji-picker-react";
+import { MdOutlineAddReaction } from "react-icons/md";
 const CreatePost = () => {
   const [postData, setPostData] = useState({ content: "" });
   const [isPosting, setIsPosting] = useState(false);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
 
   const toast = useToast();
 
@@ -50,6 +52,13 @@ const CreatePost = () => {
         isClosable: true,
       });
     }
+    setShowEmojiPicker(false);
+  };
+
+  const setEmojiHandler = (emojiObj) => {
+    const emoji = emojiObj.emoji;
+    setPostData({ ...postData, content: postData.content + emoji });
+    setShowEmojiPicker(false);
   };
 
   return (
@@ -86,17 +95,50 @@ const CreatePost = () => {
         placeholder="What's on your mind?"
         value={postData.content}
         onChange={(e) => setPostData({ ...postData, content: e.target.value })}
-        borderColor={useColorModeValue("gray.200")}
+        borderColor={useColorModeValue("gray.500")}
       />
+      <Button
+        as="span"
+        mx="1"
+        role="img"
+        aria-label="Emoji Picker"
+        alignSelf={"flex-end"}
+        rounded="full"
+        cursor={"pointer"}
+        color={"black"}
+        onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+      >
+        <MdOutlineAddReaction />
+      </Button>
+      {showEmojiPicker && (
+        <Flex
+          alignSelf={"flex-end"}
+          position="absolute"
+          overflow="auto"
+          zIndex={1}
+          border="1px"
+          rounded="md"
+          boxShadow="sm"
+          width={["75%", "280px"]} // Responsive width
+          mt={["220px", "240px"]} // Responsive margin-top
+          mx="auto"
+          cursor={"pointer"}
+        >
+          <EmojiPicker
+            onEmojiClick={setEmojiHandler}
+            pickerStyle={{ width: "100%" }}
+          />
+        </Flex>
+      )}
       <Button
         isLoading={isPosting}
         alignSelf={"flex-start"}
         backgroundColor={"blue.200"}
-        // colorScheme={useColorModeValue("blue.300")}
         onClick={handleCreatePost}
         rounded={"full"}
-        _hover={{ bgColor: "blue.300" , borderColor: "gray.400"}} 
-       
+        _hover={{ bgColor: "blue.300", borderColor: "gray.400" }}
+        cursor={"pointer"}
+        marginTop={-50}
       >
         Post
       </Button>
